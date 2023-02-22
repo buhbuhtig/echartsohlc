@@ -113,13 +113,13 @@ class CandlestickSeriesModel extends SeriesModel<CandlestickSeriesOption> {
         clip: true,
 
         itemStyle: {
-            color: '#47b262', // positive
-            color0: '#eb5454', // negative
-            borderColor: '#47b262',
-            borderColor0: '#eb5454',
+            color: '#eb5454', // positive
+            color0: '#47b262', // negative
+            borderColor: '#eb5454',
+            borderColor0: '#47b262',
             borderColorDoji: null, // when close === open
-            // borderColor: '#398f4f',
-            // borderColor0: '#d24040',
+            // borderColor: '#d24040',
+            // borderColor0: '#398f4f',
             borderWidth: 1
         },
 
