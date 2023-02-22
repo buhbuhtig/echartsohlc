@@ -92,12 +92,17 @@ const ohlcLayout: StageHandler = {
 
                 const ocLowPoint = getPoint(ocLow, axisDimVal);
                 const ocHighPoint = getPoint(ocHigh, axisDimVal);
+
+                const openPoint = getPoint(openVal, axisDimVal);
+                const closePoint = getPoint(closeVal, axisDimVal);
                 const lowestPoint = getPoint(lowestVal, axisDimVal);
                 const highestPoint = getPoint(highestVal, axisDimVal);
 
                 const ends: number[][] = [];
-                addBodyEnd(ends, ocHighPoint, 0);
-                addBodyEnd(ends, ocLowPoint, 1);
+                /*addBodyEnd(ends, ocHighPoint, 0);
+                addBodyEnd(ends, ocLowPoint, 1);*/
+                addOpenStroke(ends,openPoint)
+                addCloseStroke(ends,closePoint)
 
                 ends.push(
                     subPixelOptimizePoint(highestPoint),
@@ -124,6 +129,26 @@ const ohlcLayout: StageHandler = {
                 return (isNaN(axisDimVal) || isNaN(val))
                     ? [NaN, NaN]
                     : coordSys.dataToPoint(p);
+            }
+            function addOpenStroke(ends: number[][], point: number[])
+            {
+                const point_left = point.slice();
+                const point_base = point.slice();
+                point_left[cDimIdx] = subPixelOptimize(
+                    point_left[cDimIdx] - candleWidth / 2, 1, true
+                );
+                point_base[cDimIdx] = subPixelOptimize(point_base[cDimIdx],1);
+                ends.push(point_left, point_base)
+            }
+            function addCloseStroke(ends: number[][], point: number[])
+            {
+                const point_right = point.slice();
+                const point_base = point.slice();
+                point_right[cDimIdx] = subPixelOptimize(
+                    point_right[cDimIdx] + candleWidth / 2, 1, false
+                );
+                point_base[cDimIdx] = subPixelOptimize(point_base[cDimIdx],1);
+                ends.push(point_right, point_base)
             }
 
             function addBodyEnd(ends: number[][], point: number[], start: number) {
@@ -234,7 +259,6 @@ function getSign(
                 : 1
             );
     }
-
     return sign;
 }
 

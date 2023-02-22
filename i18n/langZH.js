@@ -112,6 +112,7 @@ var localeObj = {
             treemap: '矩形树图',
             boxplot: '箱型图',
             candlestick: 'K线图',
+            ohlc: 'OHLC图',
             k: 'K线图',
             heatmap: '热力图',
             map: '地图',
@@ -159,6 +160,7 @@ var localeObj = {
         }
     }
 };
+
     echarts.registerLocale('ZH', localeObj);
         
 });

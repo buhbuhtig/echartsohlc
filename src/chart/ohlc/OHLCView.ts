@@ -241,21 +241,39 @@ class NormalBoxPath extends Path<NormalBoxPathProps> {
     buildPath(ctx: CanvasRenderingContext2D, shape: NormalBoxPathShape) {
         const ends = shape.points;
 
+        /* HiLo line */
         if (this.__simpleBox) {
             ctx.moveTo(ends[4][0], ends[4][1]);
             ctx.lineTo(ends[6][0], ends[6][1]);
         }
         else {
+            /*my    version*/
+            ctx.moveTo(ends[4][0], ends[4][1]);
+            ctx.lineTo(ends[6][0], ends[6][1]);
+
+            ctx.moveTo(ends[0][0], ends[0][1]);
+            ctx.lineTo(ends[1][0], ends[1][1]);
+
+            ctx.moveTo(ends[2][0], ends[2][1]);
+            ctx.lineTo(ends[3][0], ends[3][1]);
+
+                
+
+            /* Rectange */
+            /*
             ctx.moveTo(ends[0][0], ends[0][1]);
             ctx.lineTo(ends[1][0], ends[1][1]);
             ctx.lineTo(ends[2][0], ends[2][1]);
             ctx.lineTo(ends[3][0], ends[3][1]);
-            ctx.closePath();
-
+            */
+            /*ctx.closePath();*/
+            /*upper-lower strokes*/
+            /*
             ctx.moveTo(ends[4][0], ends[4][1]);
             ctx.lineTo(ends[5][0], ends[5][1]);
             ctx.moveTo(ends[6][0], ends[6][1]);
             ctx.lineTo(ends[7][0], ends[7][1]);
+            */
         }
     }
 }
