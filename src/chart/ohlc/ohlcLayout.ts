@@ -99,10 +99,8 @@ const ohlcLayout: StageHandler = {
                 const highestPoint = getPoint(highestVal, axisDimVal);
 
                 const ends: number[][] = [];
-                /*addBodyEnd(ends, ocHighPoint, 0);
-                addBodyEnd(ends, ocLowPoint, 1);*/
-                addOpenStroke(ends,openPoint)
-                addCloseStroke(ends,closePoint)
+                addOpenStroke(ends, openPoint);
+                addCloseStroke(ends, closePoint);
 
                 ends.push(
                     subPixelOptimizePoint(highestPoint),
@@ -130,42 +128,26 @@ const ohlcLayout: StageHandler = {
                     ? [NaN, NaN]
                     : coordSys.dataToPoint(p);
             }
-            function addOpenStroke(ends: number[][], point: number[])
-            {
+            function addOpenStroke(ends: number[][], point: number[]) {
                 const point_left = point.slice();
                 const point_base = point.slice();
                 point_left[cDimIdx] = subPixelOptimize(
                     point_left[cDimIdx] - candleWidth / 2, 1, true
                 );
-                point_base[cDimIdx] = subPixelOptimize(point_base[cDimIdx],1);
-                ends.push(point_left, point_base)
+                point_base[cDimIdx] = subPixelOptimize(point_base[cDimIdx], 1);
+                ends.push(point_left, point_base);
             }
-            function addCloseStroke(ends: number[][], point: number[])
-            {
+            function addCloseStroke(ends: number[][], point: number[]) {
                 const point_right = point.slice();
                 const point_base = point.slice();
                 point_right[cDimIdx] = subPixelOptimize(
                     point_right[cDimIdx] + candleWidth / 2, 1, false
                 );
-                point_base[cDimIdx] = subPixelOptimize(point_base[cDimIdx],1);
-                ends.push(point_right, point_base)
+                point_base[cDimIdx] = subPixelOptimize(point_base[cDimIdx], 1);
+                ends.push(point_right, point_base);
             }
 
-            function addBodyEnd(ends: number[][], point: number[], start: number) {
-                const point1 = point.slice();
-                const point2 = point.slice();
 
-                point1[cDimIdx] = subPixelOptimize(
-                    point1[cDimIdx] + candleWidth / 2, 1, false
-                );
-                point2[cDimIdx] = subPixelOptimize(
-                    point2[cDimIdx] - candleWidth / 2, 1, true
-                );
-
-                start
-                    ? ends.push(point1, point2)
-                    : ends.push(point2, point1);
-            }
 
             function makeBrushRect(lowestVal: number, highestVal: number, axisDimVal: number) {
                 const pmin = getPoint(lowestVal, axisDimVal);
