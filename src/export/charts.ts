@@ -40,6 +40,7 @@ export {install as ParallelChart} from '../chart/parallel/install';
 export {install as SankeyChart} from '../chart/sankey/install';
 export {install as BoxplotChart} from '../chart/boxplot/install';
 export {install as CandlestickChart} from '../chart/candlestick/install';
+export {install as OHLCChart} from '../chart/ohlc/install';
 export {install as EffectScatterChart} from '../chart/effectScatter/install';
 export {install as LinesChart} from '../chart/lines/install';
 export {install as HeatmapChart} from '../chart/heatmap/install';
@@ -65,6 +66,7 @@ export {install as CustomChart} from '../chart/custom/install';
 // export {SankeySeriesOption} from '../chart/sankey/SankeySeries';
 // export {BoxplotSeriesOption} from '../chart/boxplot/BoxplotSeries';
 // export {CandlestickSeriesOption} from '../chart/candlestick/CandlestickSeries';
+// export {OHLCSeriesOption} from '../chart/ohlc/OHLCSeries';
 // export {EffectScatterSeriesOption} from '../chart/effectScatter/EffectScatterSeries';
 // export {LinesSeriesOption} from '../chart/lines/LinesSeries';
 // export {HeatmapSeriesOption} from '../chart/heatmap/HeatmapSeries';
@@ -89,6 +91,7 @@ export {
     SankeySeriesOption,
     BoxplotSeriesOption,
     CandlestickSeriesOption,
+    OHLCSeriesOption,
     EffectScatterSeriesOption,
     LinesSeriesOption,
     HeatmapSeriesOption,

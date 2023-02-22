@@ -93,6 +93,7 @@ export default {
             treemap: 'Treemap',
             boxplot: 'Boxplot',
             candlestick: 'Candlestick',
+            ohlc: 'OHLC',
             k: 'K line chart',
             heatmap: 'Heat map',
             map: 'Map',

@@ -78,6 +78,7 @@ import type {ParallelSeriesOption as ParallelSeriesOptionInner} from '../chart/p
 import type {SankeySeriesOption as SankeySeriesOptionInner} from '../chart/sankey/SankeySeries';
 import type {BoxplotSeriesOption as BoxplotSeriesOptionInner} from '../chart/boxplot/BoxplotSeries';
 import type {CandlestickSeriesOption as CandlestickSeriesOptionInner} from '../chart/candlestick/CandlestickSeries';
+import type {OHLCSeriesOption as OHLCSeriesOptionInner} from '../chart/ohlc/OHLCSeries';
 import type {
     EffectScatterSeriesOption as EffectScatterSeriesOptionInner
 } from '../chart/effectScatter/EffectScatterSeries';
@@ -193,6 +194,7 @@ export type ParallelSeriesOption = ParallelSeriesOptionInner & SeriesInjectedOpt
 export type SankeySeriesOption = SankeySeriesOptionInner & SeriesInjectedOption;
 export type BoxplotSeriesOption = BoxplotSeriesOptionInner & SeriesInjectedOption;
 export type CandlestickSeriesOption = CandlestickSeriesOptionInner & SeriesInjectedOption;
+export type OHLCSeriesOption = OHLCSeriesOptionInner & SeriesInjectedOption;
 export type EffectScatterSeriesOption = EffectScatterSeriesOptionInner & SeriesInjectedOption;
 export type LinesSeriesOption = LinesSeriesOptionInner & SeriesInjectedOption;
 export type HeatmapSeriesOption = HeatmapSeriesOptionInner & SeriesInjectedOption;
@@ -231,6 +233,7 @@ export interface RegisteredSeriesOption {
     sankey: SankeySeriesOption
     boxplot: BoxplotSeriesOption
     candlestick: CandlestickSeriesOption
+    ohlc: OHLCSeriesOption
     effectScatter: EffectScatterSeriesOption
     lines: LinesSeriesOption
     heatmap: HeatmapSeriesOption

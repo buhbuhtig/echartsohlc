@@ -205,6 +205,16 @@ const theme = {
             // borderColor: '#ca2824',
             // borderColor0: '#09a443'
         }
+    },
+    ohlc: {
+        itemStyle: {
+            color: '#f64e56',
+            color0: '#54ea92',
+            borderColor: '#f64e56',
+            borderColor0: '#54ea92'
+            // borderColor: '#ca2824',
+            // borderColor0: '#09a443'
+        }
     }
 };
 (theme.categoryAxis.splitLine as any).show = false;
