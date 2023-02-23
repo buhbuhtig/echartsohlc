@@ -94,6 +94,7 @@ class CandlestickView extends ChartView {
         const oldData = this._data;
         const group = this.group;
         const isSimpleBox = data.getLayout('isSimpleBox');
+        const isBar = data.getLayout('isBar');
 
         const needsClip = seriesModel.get('clip', true);
         const coord = seriesModel.coordinateSystem;
@@ -117,7 +118,7 @@ class CandlestickView extends ChartView {
                     const el = createNormalBox(itemLayout, newIdx, true);
                     graphic.initProps(el, {shape: {points: itemLayout.ends}}, seriesModel, newIdx);
 
-                    setBoxCommon(el, data, newIdx, isSimpleBox);
+                    setBoxCommon(el, data, newIdx, isSimpleBox, isBar);
 
                     group.add(el);
 
@@ -152,7 +153,7 @@ class CandlestickView extends ChartView {
                     saveOldStyle(el);
                 }
 
-                setBoxCommon(el, data, newIdx, isSimpleBox);
+                setBoxCommon(el, data, newIdx, isSimpleBox, isBar);
 
                 group.add(el);
                 data.setItemGraphicEl(newIdx, el);
@@ -186,12 +187,12 @@ class CandlestickView extends ChartView {
     _incrementalRenderNormal(params: StageHandlerProgressParams, seriesModel: CandlestickSeriesModel) {
         const data = seriesModel.getData();
         const isSimpleBox = data.getLayout('isSimpleBox');
-
+        const isBar = data.getLayout('isBar');
         let dataIndex;
         while ((dataIndex = params.next()) != null) {
             const itemLayout = data.getItemLayout(dataIndex) as CandlestickItemLayout;
             const el = createNormalBox(itemLayout, dataIndex);
-            setBoxCommon(el, data, dataIndex, isSimpleBox);
+            setBoxCommon(el, data, dataIndex, isSimpleBox, isBar);
 
             el.incremental = true;
             this.group.add(el);
@@ -229,6 +230,7 @@ class NormalBoxPath extends Path<NormalBoxPathProps> {
     shape: NormalBoxPathShape;
 
     __simpleBox: boolean;
+    __isBar: boolean;
 
     constructor(opts?: NormalBoxPathProps) {
         super(opts);
@@ -240,22 +242,35 @@ class NormalBoxPath extends Path<NormalBoxPathProps> {
 
     buildPath(ctx: CanvasRenderingContext2D, shape: NormalBoxPathShape) {
         const ends = shape.points;
-
-        if (this.__simpleBox) {
-            ctx.moveTo(ends[4][0], ends[4][1]);
-            ctx.lineTo(ends[6][0], ends[6][1]);
-        }
-        else {
-            ctx.moveTo(ends[0][0], ends[0][1]);
-            ctx.lineTo(ends[1][0], ends[1][1]);
-            ctx.lineTo(ends[2][0], ends[2][1]);
-            ctx.lineTo(ends[3][0], ends[3][1]);
-            ctx.closePath();
-
+        if (this.__isBar) {
             ctx.moveTo(ends[4][0], ends[4][1]);
             ctx.lineTo(ends[5][0], ends[5][1]);
-            ctx.moveTo(ends[6][0], ends[6][1]);
-            ctx.lineTo(ends[7][0], ends[7][1]);
+
+            if (!this.__simpleBox) {
+                ctx.moveTo(ends[0][0], ends[0][1]);
+                ctx.lineTo(ends[1][0], ends[1][1]);
+
+                ctx.moveTo(ends[2][0], ends[2][1]);
+                ctx.lineTo(ends[3][0], ends[3][1]);
+            }
+        }
+        else {
+            if (this.__simpleBox) {
+                ctx.moveTo(ends[4][0], ends[4][1]);
+                ctx.lineTo(ends[6][0], ends[6][1]);
+            }
+            else {
+                ctx.moveTo(ends[0][0], ends[0][1]);
+                ctx.lineTo(ends[1][0], ends[1][1]);
+                ctx.lineTo(ends[2][0], ends[2][1]);
+                ctx.lineTo(ends[3][0], ends[3][1]);
+                ctx.closePath();
+
+                ctx.moveTo(ends[4][0], ends[4][1]);
+                ctx.lineTo(ends[5][0], ends[5][1]);
+                ctx.moveTo(ends[6][0], ends[6][1]);
+                ctx.lineTo(ends[7][0], ends[7][1]);
+            }
         }
     }
 }
@@ -285,13 +300,14 @@ function isNormalBoxClipped(clipArea: CoordinateSystemClipArea, itemLayout: Cand
     return clipped;
 }
 
-function setBoxCommon(el: NormalBoxPath, data: SeriesData, dataIndex: number, isSimpleBox?: boolean) {
+function setBoxCommon(el: NormalBoxPath, data: SeriesData, dataIndex: number, isSimpleBox?: boolean, isBar?: boolean) {
     const itemModel = data.getItemModel(dataIndex) as Model<CandlestickDataItemOption>;
 
     el.useStyle(data.getItemVisual(dataIndex, 'style'));
     el.style.strokeNoScale = true;
 
     el.__simpleBox = isSimpleBox;
+    el.__isBar = isBar;
 
     setStatesStylesFromModel(el, itemModel);
 }

@@ -126,7 +126,6 @@ const BUILTIN_CHARTS_MAP = {
     sankey: 'SankeyChart',
     boxplot: 'BoxplotChart',
     candlestick: 'CandlestickChart',
-    ohlc: 'OHLCChart',
     effectScatter: 'EffectScatterChart',
     lines: 'LinesChart',
     heatmap: 'HeatmapChart',

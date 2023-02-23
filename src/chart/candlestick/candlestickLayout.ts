@@ -36,6 +36,7 @@ export interface CandlestickItemLayout {
 }
 
 export interface CandlestickLayoutMeta {
+    isBar: boolean
     candleWidth: number
     isSimpleBox: boolean
 }
@@ -60,9 +61,11 @@ const candlestickLayout: StageHandler = {
         const closeDimI = vDimsI[1];
         const lowestDimI = vDimsI[2];
         const highestDimI = vDimsI[3];
+        const isBar = seriesModel.get('barchart');
 
         data.setLayout({
             candleWidth: candleWidth,
+            isBar: isBar,
             // The value is experimented visually.
             isSimpleBox: candleWidth <= 1.3
         } as CandlestickLayoutMeta);
@@ -92,19 +95,33 @@ const candlestickLayout: StageHandler = {
 
                 const ocLowPoint = getPoint(ocLow, axisDimVal);
                 const ocHighPoint = getPoint(ocHigh, axisDimVal);
+
+                const openPoint = getPoint(openVal, axisDimVal);
+                const closePoint = getPoint(closeVal, axisDimVal);
                 const lowestPoint = getPoint(lowestVal, axisDimVal);
                 const highestPoint = getPoint(highestVal, axisDimVal);
 
                 const ends: number[][] = [];
-                addBodyEnd(ends, ocHighPoint, 0);
-                addBodyEnd(ends, ocLowPoint, 1);
+                if (isBar) {
+                    addOpenStroke(ends, openPoint);
+                    addCloseStroke(ends, closePoint);
 
-                ends.push(
-                    subPixelOptimizePoint(highestPoint),
-                    subPixelOptimizePoint(ocHighPoint),
-                    subPixelOptimizePoint(lowestPoint),
-                    subPixelOptimizePoint(ocLowPoint)
-                );
+                    ends.push(
+                        subPixelOptimizePoint(highestPoint),
+                        subPixelOptimizePoint(lowestPoint)
+                    );
+                }
+                else {
+                    addBodyEnd(ends, ocHighPoint, 0);
+                    addBodyEnd(ends, ocLowPoint, 1);
+
+                    ends.push(
+                        subPixelOptimizePoint(highestPoint),
+                        subPixelOptimizePoint(ocHighPoint),
+                        subPixelOptimizePoint(lowestPoint),
+                        subPixelOptimizePoint(ocLowPoint)
+                    );
+                }
 
                 const itemModel = data.getItemModel<CandlestickDataItemOption>(dataIndex);
                 const hasDojiColor = !!itemModel.get(['itemStyle', 'borderColorDoji']);
@@ -124,6 +141,24 @@ const candlestickLayout: StageHandler = {
                 return (isNaN(axisDimVal) || isNaN(val))
                     ? [NaN, NaN]
                     : coordSys.dataToPoint(p);
+            }
+            function addOpenStroke(ends: number[][], openPoint: number[]) {
+                const point_left = openPoint.slice();
+                const point_base = openPoint.slice();
+                point_left[cDimIdx] = subPixelOptimize(
+                    point_left[cDimIdx] - candleWidth / 2, 1, true
+                );
+                point_base[cDimIdx] = subPixelOptimize(point_base[cDimIdx], 1);
+                ends.push(point_left, point_base);
+            }
+            function addCloseStroke(ends: number[][], closePoint: number[]) {
+                const point_right = closePoint.slice();
+                const point_base = closePoint.slice();
+                point_right[cDimIdx] = subPixelOptimize(
+                    point_right[cDimIdx] + candleWidth / 2, 1, false
+                );
+                point_base[cDimIdx] = subPixelOptimize(point_base[cDimIdx], 1);
+                ends.push(point_right, point_base);
             }
 
             function addBodyEnd(ends: number[][], point: number[], start: number) {
