@@ -95,8 +95,8 @@ class OHLCSeriesModel extends SeriesModel<OHLCSeriesOption> {
     defaultValueDimensions = [
         {name: 'open', defaultTooltip: true},
         {name: 'close', defaultTooltip: true},
-        {name: 'lowest', defaultTooltip: true},
-        {name: 'highest', defaultTooltip: true}
+        {name: 'low', defaultTooltip: true},
+        {name: 'high', defaultTooltip: true}
     ];
 
     static defaultOption: OHLCSeriesOption = {
