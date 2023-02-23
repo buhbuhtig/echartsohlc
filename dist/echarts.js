@@ -16290,23 +16290,23 @@
      */
 
     /*
-    * Licensed to the Apache Software Foundation (ASF) under one
-    * or more contributor license agreements.  See the NOTICE file
-    * distributed with this work for additional information
-    * regarding copyright ownership.  The ASF licenses this file
-    * to you under the Apache License, Version 2.0 (the
-    * "License"); you may not use this file except in compliance
-    * with the License.  You may obtain a copy of the License at
-    *
-    *   http://www.apache.org/licenses/LICENSE-2.0
-    *
-    * Unless required by applicable law or agreed to in writing,
-    * software distributed under the License is distributed on an
-    * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    * KIND, either express or implied.  See the License for the
-    * specific language governing permissions and limitations
-    * under the License.
-    */
+     * Licensed to the Apache Software Foundation (ASF) under one
+     * or more contributor license agreements.  See the NOTICE file
+     * distributed with this work for additional information
+     * regarding copyright ownership.  The ASF licenses this file
+     * to you under the Apache License, Version 2.0 (the
+     * "License"); you may not use this file except in compliance
+     * with the License.  You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing,
+     * software distributed under the License is distributed on an
+     * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     * KIND, either express or implied.  See the License for the
+     * specific language governing permissions and limitations
+     * under the License.
+     */
 
     /**
      * Language: English.
@@ -16373,6 +16373,7 @@
           treemap: 'Treemap',
           boxplot: 'Boxplot',
           candlestick: 'Candlestick',
+          ohlc: 'OHLC',
           k: 'K line chart',
           heatmap: 'Heat map',
           map: 'Map',
@@ -16525,6 +16526,7 @@
           treemap: '矩形树图',
           boxplot: '箱型图',
           candlestick: 'K线图',
+          ohlc: 'OHLC图',
           k: 'K线图',
           heatmap: '热力图',
           map: '地图',
@@ -18415,6 +18417,7 @@
       sankey: 'SankeyChart',
       boxplot: 'BoxplotChart',
       candlestick: 'CandlestickChart',
+      ohlc: 'OHLCChart',
       effectScatter: 'EffectScatterChart',
       lines: 'LinesChart',
       heatmap: 'HeatmapChart',
@@ -20454,11 +20457,7 @@
 
 
       if (obj) {
-        var dimensions_1 = [];
-        each(obj, function (value, key) {
-          dimensions_1.push(key);
-        });
-        return dimensions_1;
+        return keys(obj);
       }
     } // Consider dimensions defined like ['A', 'price', 'B', 'price', 'C', 'price'],
     // which is reasonable. But dimension name is duplicated.
@@ -22157,7 +22156,7 @@
     /** @class */
     function () {
       function DataStore() {
-        this._chunks = []; // It will not be calculated util needed.
+        this._chunks = []; // It will not be calculated until needed.
 
         this._rawExtent = [];
         this._extent = [];
@@ -22575,7 +22574,7 @@
             // When the `value` is at the middle of `this.get(dim, i)` and `this.get(dim, i+1)`,
             // we'd better not push both of them to `nearestIndices`, otherwise it is easy to
             // get more than one item in `nearestIndices` (more specifically, in `tooltip`).
-            // So we chose the one that `diff >= 0` in this csae.
+            // So we choose the one that `diff >= 0` in this case.
             // But if `this.get(dim, i)` and `this.get(dim, j)` get the same value, both of them
             // should be push to `nearestIndices`.
             if (dist < minDist || dist === minDist && diff >= 0 && minDiff < 0) {
@@ -22927,7 +22926,7 @@
           maxArea = -1;
           nextRawIndex = frameStart;
           var firstNaNIndex = -1;
-          var countNaN = 0; // Find a point from current frame that construct a triangel with largest area with previous selected point
+          var countNaN = 0; // Find a point from current frame that construct a triangle with largest area with previous selected point
           // And the average of next frame.
 
           for (var idx = frameStart; idx < frameEnd; idx++) {
@@ -23918,8 +23917,8 @@
     /** @class */
     function () {
       function TooltipMarkupStyleCreator() {
-        this.richTextStyles = {}; // Notice that "generate a style name" usuall happens repeatly when mouse moving and
-        // displaying a tooltip. So we put the `_nextStyleNameId` as a member of each creator
+        this.richTextStyles = {}; // Notice that "generate a style name" usually happens repeatedly when mouse is moving and
+        // a tooltip is displayed. So we put the `_nextStyleNameId` as a member of each creator
         // rather than static shared by all creators (which will cause it increase to fast).
 
         this._nextStyleNameId = getRandomIdBase();
@@ -24024,8 +24023,8 @@
       var inlineName = multipleSeries ? seriesName : itemName;
       return createTooltipMarkup('section', {
         header: seriesName,
-        // When series name not specified, do not show a header line with only '-'.
-        // This case alway happen in tooltip.trigger: 'item'.
+        // When series name is not specified, do not show a header line with only '-'.
+        // This case always happens in tooltip.trigger: 'item'.
         noHeader: multipleSeries || !seriesNameSpecified,
         sortParam: sortParam,
         blocks: [createTooltipMarkup('nameValue', {
@@ -24637,7 +24636,7 @@
     }
 
     function dataTaskProgress(param, context) {
-      // Avoid repead cloneShallow when data just created in reset.
+      // Avoid repeat cloneShallow when data just created in reset.
       if (context.outputData && param.end > context.outputData.count()) {
         context.model.getRawData().cloneShallow(context.outputData);
       }
@@ -26200,6 +26199,16 @@
           // borderColor0: '#09a443'
 
         }
+      },
+      ohlc: {
+        itemStyle: {
+          color: '#f64e56',
+          color0: '#54ea92',
+          borderColor: '#f64e56',
+          borderColor0: '#54ea92' // borderColor: '#ca2824',
+          // borderColor0: '#09a443'
+
+        }
       }
     };
     theme.categoryAxis.splitLine.show = false;
@@ -26525,7 +26534,7 @@
       }
     }
 
-    // Inlucdes: pieSelect, pieUnSelect, pieToggleSelect, mapSelect, mapUnSelect, mapToggleSelect
+    // Includes: pieSelect, pieUnSelect, pieToggleSelect, mapSelect, mapUnSelect, mapToggleSelect
 
     function createLegacyDataSelectAction(seriesType, ecRegisterAction) {
       function getSeriesIndices(ecModel, payload) {
@@ -42720,7 +42729,7 @@
         var polyline = this._polyline;
         var polygon = this._polygon;
         var lineGroup = this._lineGroup;
-        var hasAnimation = seriesModel.get('animation');
+        var hasAnimation = !ecModel.ssr && seriesModel.isAnimationEnabled();
         var isAreaChart = !areaStyleModel.isEmpty();
         var valueOrigin = areaStyleModel.get('origin');
         var dataCoordInfo = prepareDataCoordInfo(coordSys, data, valueOrigin);
@@ -43100,8 +43109,8 @@
           seriesDuration = seriesDuration(null);
         }
 
-        var seriesDalay = seriesModel.get('animationDelay') || 0;
-        var seriesDalayValue = isFunction(seriesDalay) ? seriesDalay(null) : seriesDalay;
+        var seriesDelay = seriesModel.get('animationDelay') || 0;
+        var seriesDelayValue = isFunction(seriesDelay) ? seriesDelay(null) : seriesDelay;
         data.eachItemGraphicEl(function (symbol, idx) {
           var el = symbol;
 
@@ -43146,7 +43155,7 @@
               ratio = 1 - ratio;
             }
 
-            var delay = isFunction(seriesDalay) ? seriesDalay(idx) : seriesDuration * ratio + seriesDalayValue;
+            var delay = isFunction(seriesDelay) ? seriesDelay(idx) : seriesDuration * ratio + seriesDelayValue;
             var symbolPath = el.getSymbolPath();
             var text = symbolPath.getTextContent();
             el.attr({
@@ -44632,7 +44641,7 @@
           var sectorShape = sector.shape;
           var animateProperty = isRadial ? 'r' : 'endAngle';
           var animateTarget = {};
-          sectorShape[animateProperty] = isRadial ? 0 : layout.startAngle;
+          sectorShape[animateProperty] = isRadial ? layout.r0 : layout.startAngle;
           animateTarget[animateProperty] = layout[animateProperty];
           (isUpdate ? updateProps : initProps)(sector, {
             shape: animateTarget // __value: typeof dataValue === 'string' ? parseInt(dataValue, 10) : dataValue
@@ -48194,7 +48203,7 @@
           handleAutoShown: function () {
             return true;
           }
-        }); // FIXME Not use a seperate text group?
+        }); // FIXME Not use a separate text group?
 
         var transformGroup = new Group({
           x: opt.position[0],
@@ -48702,7 +48711,7 @@
             // in category axis.
             // (2) Compatible with previous version, which always use formatted label as
             // input. But in interval scale the formatted label is like '223,445', which
-            // maked user repalce ','. So we modify it to return original val but remain
+            // maked user replace ','. So we modify it to return original val but remain
             // it as 'string' to avoid error in replacing.
             axis.type === 'category' ? rawLabel : axis.type === 'value' ? tickValue + '' : tickValue, index) : textColor
           })
@@ -48780,8 +48789,8 @@
 
         var coordSysKey = makeKey(coordSys.model);
         var axesInfoInCoordSys = result.coordSysAxesInfo[coordSysKey] = {};
-        result.coordSysMap[coordSysKey] = coordSys; // Set tooltip (like 'cross') is a convienent way to show axisPointer
-        // for user. So we enable seting tooltip on coordSys model.
+        result.coordSysMap[coordSysKey] = coordSys; // Set tooltip (like 'cross') is a convenient way to show axisPointer
+        // for user. So we enable setting tooltip on coordSys model.
 
         var coordSysModel = coordSys.model;
         var baseTooltipModel = coordSysModel.getModel('tooltip', globalTooltipModel);
@@ -48863,8 +48872,8 @@
       // has value can not be hovered. value/time/log axis default snap if
       // triggered from tooltip and trigger tooltip.
 
-      volatileOption.snap = axis.type !== 'category' && !!triggerTooltip; // Compatibel with previous behavior, tooltip axis do not show label by default.
-      // Only these properties can be overrided from tooltip to axisPointer.
+      volatileOption.snap = axis.type !== 'category' && !!triggerTooltip; // Compatible with previous behavior, tooltip axis does not show label by default.
+      // Only these properties can be overridden from tooltip to axisPointer.
 
       if (tooltipAxisPointerModel.get('type') === 'cross') {
         volatileOption.type = 'line';
@@ -52353,10 +52362,10 @@
 
       MapDraw.prototype._enableBlurEntireSVG = function (focusSelf, viewBuildCtx) {
         // It's a little complicated to support blurring the entire geoSVG in series-map.
-        // So do not suport it until some requirements come.
+        // So do not support it until some requirements come.
         // At present, in series-map, only regions can be blurred.
         if (focusSelf && viewBuildCtx.isGeo) {
-          var blurStyle = viewBuildCtx.mapOrGeoModel.getModel(['blur', 'itemStyle']).getItemStyle(); // Only suport `opacity` here. Because not sure that other props are suitable for
+          var blurStyle = viewBuildCtx.mapOrGeoModel.getModel(['blur', 'itemStyle']).getItemStyle(); // Only support `opacity` here. Because not sure that other props are suitable for
           // all of the elements generated by SVG (especially for Text/TSpan/Image/... ).
 
           var opacity_1 = blurStyle.opacity;
@@ -52550,12 +52559,12 @@
       // polyline and polygon is "open" or "close" but not fill or not).
       // (2) For the common props like opacity, if some use itemStyle
       // and some use `lineStyle`, it might confuse users.
-      // (3) Most SVG use <path>, where can not detect wether draw a "line"
+      // (3) Most SVG use <path>, where can not detect whether to draw a "line"
       // or a filled shape, so use `itemStyle` for <path>.
       var normalStyleModel = regionModel.getModel('itemStyle');
       var emphasisStyleModel = regionModel.getModel(['emphasis', 'itemStyle']);
       var blurStyleModel = regionModel.getModel(['blur', 'itemStyle']);
-      var selectStyleModel = regionModel.getModel(['select', 'itemStyle']); // NOTE: DONT use 'style' in visual when drawing map.
+      var selectStyleModel = regionModel.getModel(['select', 'itemStyle']); // NOTE: DON'T use 'style' in visual when drawing map.
       // This component is used for drawing underlying map for both geo component and map series.
 
       var normalStyle = getFixedItemStyle(normalStyleModel);
@@ -61154,7 +61163,7 @@
 
       Graph.prototype.addEdge = function (n1, n2, dataIndex) {
         var nodesMap = this._nodesMap;
-        var edgesMap = this._edgesMap; // PNEDING
+        var edgesMap = this._edgesMap; // PENDING
 
         if (isNumber(n1)) {
           n1 = this.nodes[n1];
@@ -64709,7 +64718,7 @@
 
         function addOrUpdate(newIndex, oldIndex) {
           var newBrushInternal = coverConfigList[newIndex]; // Consider setOption in event listener of brushSelect,
-          // where updating cover when creating should be forbiden.
+          // where updating cover when creating should be forbidden.
 
           if (oldIndex != null && oldCovers[oldIndex] === creatingCover) {
             newCovers[newIndex] = oldCovers[oldIndex];
@@ -65195,7 +65204,7 @@
         var eventParams = updateCoverByMouse(controller, e, localCursorPoint, true);
         controller._dragging = false;
         controller._track = [];
-        controller._creatingCover = null; // trigger event shoule be at final, after procedure will be nested.
+        controller._creatingCover = null; // trigger event should be at final, after procedure will be nested.
 
         eventParams && trigger$1(controller, eventParams);
       }
@@ -67881,6 +67890,665 @@
       registers.registerLayout(candlestickLayout);
     }
 
+    var SKIP_PROPS$1 = ['color', 'borderColor'];
+
+    var OHLCView =
+    /** @class */
+    function (_super) {
+      __extends(OHLCView, _super);
+
+      function OHLCView() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+
+        _this.type = OHLCView.type;
+        return _this;
+      }
+
+      OHLCView.prototype.render = function (seriesModel, ecModel, api) {
+        // If there is clipPath created in large mode. Remove it.
+        this.group.removeClipPath(); // Clear previously rendered progressive elements.
+
+        this._progressiveEls = null;
+
+        this._updateDrawMode(seriesModel);
+
+        this._isLargeDraw ? this._renderLarge(seriesModel) : this._renderNormal(seriesModel);
+      };
+
+      OHLCView.prototype.incrementalPrepareRender = function (seriesModel, ecModel, api) {
+        this._clear();
+
+        this._updateDrawMode(seriesModel);
+      };
+
+      OHLCView.prototype.incrementalRender = function (params, seriesModel, ecModel, api) {
+        this._progressiveEls = [];
+        this._isLargeDraw ? this._incrementalRenderLarge(params, seriesModel) : this._incrementalRenderNormal(params, seriesModel);
+      };
+
+      OHLCView.prototype.eachRendered = function (cb) {
+        traverseElements(this._progressiveEls || this.group, cb);
+      };
+
+      OHLCView.prototype._updateDrawMode = function (seriesModel) {
+        var isLargeDraw = seriesModel.pipelineContext.large;
+
+        if (this._isLargeDraw == null || isLargeDraw !== this._isLargeDraw) {
+          this._isLargeDraw = isLargeDraw;
+
+          this._clear();
+        }
+      };
+
+      OHLCView.prototype._renderNormal = function (seriesModel) {
+        var data = seriesModel.getData();
+        var oldData = this._data;
+        var group = this.group;
+        var isSimpleBox = data.getLayout('isSimpleBox');
+        var needsClip = seriesModel.get('clip', true);
+        var coord = seriesModel.coordinateSystem;
+        var clipArea = coord.getArea && coord.getArea(); // There is no old data only when first rendering or switching from
+        // stream mode to normal mode, where previous elements should be removed.
+
+        if (!this._data) {
+          group.removeAll();
+        }
+
+        data.diff(oldData).add(function (newIdx) {
+          if (data.hasValue(newIdx)) {
+            var itemLayout = data.getItemLayout(newIdx);
+
+            if (needsClip && isNormalBoxClipped$1(clipArea, itemLayout)) {
+              return;
+            }
+
+            var el = createNormalBox$2(itemLayout, newIdx, true);
+            initProps(el, {
+              shape: {
+                points: itemLayout.ends
+              }
+            }, seriesModel, newIdx);
+            setBoxCommon$1(el, data, newIdx, isSimpleBox);
+            group.add(el);
+            data.setItemGraphicEl(newIdx, el);
+          }
+        }).update(function (newIdx, oldIdx) {
+          var el = oldData.getItemGraphicEl(oldIdx); // Empty data
+
+          if (!data.hasValue(newIdx)) {
+            group.remove(el);
+            return;
+          }
+
+          var itemLayout = data.getItemLayout(newIdx);
+
+          if (needsClip && isNormalBoxClipped$1(clipArea, itemLayout)) {
+            group.remove(el);
+            return;
+          }
+
+          if (!el) {
+            el = createNormalBox$2(itemLayout);
+          } else {
+            updateProps(el, {
+              shape: {
+                points: itemLayout.ends
+              }
+            }, seriesModel, newIdx);
+            saveOldStyle(el);
+          }
+
+          setBoxCommon$1(el, data, newIdx, isSimpleBox);
+          group.add(el);
+          data.setItemGraphicEl(newIdx, el);
+        }).remove(function (oldIdx) {
+          var el = oldData.getItemGraphicEl(oldIdx);
+          el && group.remove(el);
+        }).execute();
+        this._data = data;
+      };
+
+      OHLCView.prototype._renderLarge = function (seriesModel) {
+        this._clear();
+
+        createLarge$2(seriesModel, this.group);
+        var clipPath = seriesModel.get('clip', true) ? createClipPath(seriesModel.coordinateSystem, false, seriesModel) : null;
+
+        if (clipPath) {
+          this.group.setClipPath(clipPath);
+        } else {
+          this.group.removeClipPath();
+        }
+      };
+
+      OHLCView.prototype._incrementalRenderNormal = function (params, seriesModel) {
+        var data = seriesModel.getData();
+        var isSimpleBox = data.getLayout('isSimpleBox');
+        var dataIndex;
+
+        while ((dataIndex = params.next()) != null) {
+          var itemLayout = data.getItemLayout(dataIndex);
+          var el = createNormalBox$2(itemLayout);
+          setBoxCommon$1(el, data, dataIndex, isSimpleBox);
+          el.incremental = true;
+          this.group.add(el);
+
+          this._progressiveEls.push(el);
+        }
+      };
+
+      OHLCView.prototype._incrementalRenderLarge = function (params, seriesModel) {
+        createLarge$2(seriesModel, this.group, this._progressiveEls, true);
+      };
+
+      OHLCView.prototype.remove = function (ecModel) {
+        this._clear();
+      };
+
+      OHLCView.prototype._clear = function () {
+        this.group.removeAll();
+        this._data = null;
+      };
+
+      OHLCView.type = 'ohlc';
+      return OHLCView;
+    }(ChartView);
+
+    var NormalBoxPathShape$1 =
+    /** @class */
+    function () {
+      function NormalBoxPathShape() {}
+
+      return NormalBoxPathShape;
+    }();
+
+    var NormalBoxPath$1 =
+    /** @class */
+    function (_super) {
+      __extends(NormalBoxPath, _super);
+
+      function NormalBoxPath(opts) {
+        var _this = _super.call(this, opts) || this;
+
+        _this.type = 'normalOHLCBox';
+        return _this;
+      }
+
+      NormalBoxPath.prototype.getDefaultShape = function () {
+        return new NormalBoxPathShape$1();
+      };
+
+      NormalBoxPath.prototype.buildPath = function (ctx, shape) {
+        var ends = shape.points;
+
+        if (this.__simpleBox) {
+          ctx.moveTo(ends[4][0], ends[4][1]);
+          ctx.lineTo(ends[5][0], ends[5][1]);
+        } else {
+          ctx.moveTo(ends[4][0], ends[4][1]);
+          ctx.lineTo(ends[5][0], ends[5][1]);
+          ctx.moveTo(ends[0][0], ends[0][1]);
+          ctx.lineTo(ends[1][0], ends[1][1]);
+          ctx.moveTo(ends[2][0], ends[2][1]);
+          ctx.lineTo(ends[3][0], ends[3][1]);
+        }
+      };
+
+      return NormalBoxPath;
+    }(Path);
+
+    function createNormalBox$2(itemLayout, dataIndex, isInit) {
+      var ends = itemLayout.ends;
+      return new NormalBoxPath$1({
+        shape: {
+          points: isInit ? transInit$2(ends, itemLayout) : ends
+        },
+        z2: 100
+      });
+    }
+
+    function isNormalBoxClipped$1(clipArea, itemLayout) {
+      var clipped = true;
+
+      for (var i = 0; i < itemLayout.ends.length; i++) {
+        // If any point are in the region.
+        if (clipArea.contain(itemLayout.ends[i][0], itemLayout.ends[i][1])) {
+          clipped = false;
+          break;
+        }
+      }
+
+      return clipped;
+    }
+
+    function setBoxCommon$1(el, data, dataIndex, isSimpleBox) {
+      var itemModel = data.getItemModel(dataIndex);
+      el.useStyle(data.getItemVisual(dataIndex, 'style'));
+      el.style.strokeNoScale = true;
+      el.__simpleBox = isSimpleBox;
+      setStatesStylesFromModel(el, itemModel);
+    }
+
+    function transInit$2(points, itemLayout) {
+      return map(points, function (point) {
+        point = point.slice();
+        point[1] = itemLayout.initBaseline;
+        return point;
+      });
+    }
+
+    var LargeBoxPathShape$1 =
+    /** @class */
+    function () {
+      function LargeBoxPathShape() {}
+
+      return LargeBoxPathShape;
+    }();
+
+    var LargeBoxPath$1 =
+    /** @class */
+    function (_super) {
+      __extends(LargeBoxPath, _super);
+
+      function LargeBoxPath(opts) {
+        var _this = _super.call(this, opts) || this;
+
+        _this.type = 'largeOHLCBox';
+        return _this;
+      }
+
+      LargeBoxPath.prototype.getDefaultShape = function () {
+        return new LargeBoxPathShape$1();
+      };
+
+      LargeBoxPath.prototype.buildPath = function (ctx, shape) {
+        // Drawing lines is more efficient than drawing
+        // a whole line or drawing rects.
+        var points = shape.points;
+
+        for (var i = 0; i < points.length;) {
+          if (this.__sign === points[i++]) {
+            var x = points[i++];
+            ctx.moveTo(x, points[i++]);
+            ctx.lineTo(x, points[i++]);
+          } else {
+            i += 3;
+          }
+        }
+      };
+
+      return LargeBoxPath;
+    }(Path);
+
+    function createLarge$2(seriesModel, group, progressiveEls, incremental) {
+      var data = seriesModel.getData();
+      var largePoints = data.getLayout('largePoints');
+      var elP = new LargeBoxPath$1({
+        shape: {
+          points: largePoints
+        },
+        __sign: 1,
+        ignoreCoarsePointer: true
+      });
+      group.add(elP);
+      var elN = new LargeBoxPath$1({
+        shape: {
+          points: largePoints
+        },
+        __sign: -1,
+        ignoreCoarsePointer: true
+      });
+      group.add(elN);
+      var elDoji = new LargeBoxPath$1({
+        shape: {
+          points: largePoints
+        },
+        __sign: 0,
+        ignoreCoarsePointer: true
+      });
+      group.add(elDoji);
+      setLargeStyle$1(1, elP, seriesModel);
+      setLargeStyle$1(-1, elN, seriesModel);
+      setLargeStyle$1(0, elDoji, seriesModel);
+
+      if (incremental) {
+        elP.incremental = true;
+        elN.incremental = true;
+      }
+
+      if (progressiveEls) {
+        progressiveEls.push(elP, elN);
+      }
+    }
+
+    function setLargeStyle$1(sign, el, seriesModel, data) {
+      // TODO put in visual?
+      var borderColor = seriesModel.get(['itemStyle', sign > 0 ? 'borderColor' : 'borderColor0']) // Use color for border color by default.
+      || seriesModel.get(['itemStyle', sign > 0 ? 'color' : 'color0']);
+
+      if (sign === 0) {
+        borderColor = seriesModel.get(['itemStyle', 'borderColorDoji']);
+      } // Color must be excluded.
+      // Because symbol provide setColor individually to set fill and stroke
+
+
+      var itemStyle = seriesModel.getModel('itemStyle').getItemStyle(SKIP_PROPS$1);
+      el.useStyle(itemStyle);
+      el.style.fill = null;
+      el.style.stroke = borderColor;
+    }
+
+    var OHLCSeriesModel =
+    /** @class */
+    function (_super) {
+      __extends(OHLCSeriesModel, _super);
+
+      function OHLCSeriesModel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+
+        _this.type = OHLCSeriesModel.type;
+        _this.defaultValueDimensions = [{
+          name: 'open',
+          defaultTooltip: true
+        }, {
+          name: 'close',
+          defaultTooltip: true
+        }, {
+          name: 'lowest',
+          defaultTooltip: true
+        }, {
+          name: 'highest',
+          defaultTooltip: true
+        }];
+        return _this;
+      }
+      /**
+       * Get dimension for shadow in dataZoom
+       * @return dimension name
+       */
+
+
+      OHLCSeriesModel.prototype.getShadowDim = function () {
+        return 'open';
+      };
+
+      OHLCSeriesModel.prototype.brushSelector = function (dataIndex, data, selectors) {
+        var itemLayout = data.getItemLayout(dataIndex);
+        return itemLayout && selectors.rect(itemLayout.brushRect);
+      };
+
+      OHLCSeriesModel.type = 'series.ohlc';
+      OHLCSeriesModel.dependencies = ['xAxis', 'yAxis', 'grid'];
+      OHLCSeriesModel.defaultOption = {
+        // zlevel: 0,
+        z: 2,
+        coordinateSystem: 'cartesian2d',
+        legendHoverLink: true,
+        // xAxisIndex: 0,
+        // yAxisIndex: 0,
+        layout: null,
+        clip: true,
+        itemStyle: {
+          color: '#47b262',
+          color0: '#eb5454',
+          borderColor: '#47b262',
+          borderColor0: '#eb5454',
+          borderColorDoji: null,
+          // borderColor: '#398f4f',
+          // borderColor0: '#d24040',
+          borderWidth: 1
+        },
+        emphasis: {
+          scale: true,
+          itemStyle: {
+            borderWidth: 2
+          }
+        },
+        barMaxWidth: null,
+        barMinWidth: null,
+        barWidth: null,
+        large: true,
+        largeThreshold: 600,
+        progressive: 3e3,
+        progressiveThreshold: 1e4,
+        progressiveChunkMode: 'mod',
+        animationEasing: 'linear',
+        animationDuration: 300
+      };
+      return OHLCSeriesModel;
+    }(SeriesModel);
+
+    mixin(OHLCSeriesModel, WhiskerBoxCommonMixin, true);
+
+    var positiveBorderColorQuery$1 = ['itemStyle', 'borderColor'];
+    var negativeBorderColorQuery$1 = ['itemStyle', 'borderColor0'];
+    var dojiBorderColorQuery$1 = ['itemStyle', 'borderColorDoji'];
+    var positiveColorQuery$1 = ['itemStyle', 'color'];
+    var negativeColorQuery$1 = ['itemStyle', 'color0'];
+    var ohlcVisual = {
+      seriesType: 'ohlc',
+      plan: createRenderPlanner(),
+      // For legend.
+      performRawSeries: true,
+      reset: function (seriesModel, ecModel) {
+        function getColor(sign, model) {
+          return model.get(sign > 0 ? positiveColorQuery$1 : negativeColorQuery$1);
+        }
+
+        function getBorderColor(sign, model) {
+          return model.get(sign === 0 ? dojiBorderColorQuery$1 : sign > 0 ? positiveBorderColorQuery$1 : negativeBorderColorQuery$1);
+        } // Only visible series has each data be visual encoded
+
+
+        if (ecModel.isSeriesFiltered(seriesModel)) {
+          return;
+        }
+
+        var isLargeRender = seriesModel.pipelineContext.large;
+        return !isLargeRender && {
+          progress: function (params, data) {
+            var dataIndex;
+
+            while ((dataIndex = params.next()) != null) {
+              var itemModel = data.getItemModel(dataIndex);
+              var sign = data.getItemLayout(dataIndex).sign;
+              var style = itemModel.getItemStyle();
+              style.fill = getColor(sign, itemModel);
+              style.stroke = getBorderColor(sign, itemModel) || style.fill;
+              var existsStyle = data.ensureUniqueItemVisual(dataIndex, 'style');
+              extend(existsStyle, style);
+            }
+          }
+        };
+      }
+    };
+
+    var ohlcLayout = {
+      seriesType: 'ohlc',
+      plan: createRenderPlanner(),
+      reset: function (seriesModel) {
+        var coordSys = seriesModel.coordinateSystem;
+        var data = seriesModel.getData();
+        var candleWidth = calculateCandleWidth$1(seriesModel, data);
+        var cDimIdx = 0;
+        var vDimIdx = 1;
+        var coordDims = ['x', 'y'];
+        var cDimI = data.getDimensionIndex(data.mapDimension(coordDims[cDimIdx]));
+        var vDimsI = map(data.mapDimensionsAll(coordDims[vDimIdx]), data.getDimensionIndex, data);
+        var openDimI = vDimsI[0];
+        var closeDimI = vDimsI[1];
+        var lowestDimI = vDimsI[2];
+        var highestDimI = vDimsI[3];
+        data.setLayout({
+          candleWidth: candleWidth,
+          // The value is experimented visually.
+          isSimpleBox: candleWidth <= 1.3
+        });
+
+        if (cDimI < 0 || vDimsI.length < 4) {
+          return;
+        }
+
+        return {
+          progress: seriesModel.pipelineContext.large ? largeProgress : normalProgress
+        };
+
+        function normalProgress(params, data) {
+          var dataIndex;
+          var store = data.getStore();
+
+          while ((dataIndex = params.next()) != null) {
+            var axisDimVal = store.get(cDimI, dataIndex);
+            var openVal = store.get(openDimI, dataIndex);
+            var closeVal = store.get(closeDimI, dataIndex);
+            var lowestVal = store.get(lowestDimI, dataIndex);
+            var highestVal = store.get(highestDimI, dataIndex);
+            var ocLow = Math.min(openVal, closeVal);
+            var ocHigh = Math.max(openVal, closeVal);
+            var ocLowPoint = getPoint(ocLow, axisDimVal);
+            var ocHighPoint = getPoint(ocHigh, axisDimVal);
+            var openPoint = getPoint(openVal, axisDimVal);
+            var closePoint = getPoint(closeVal, axisDimVal);
+            var lowestPoint = getPoint(lowestVal, axisDimVal);
+            var highestPoint = getPoint(highestVal, axisDimVal);
+            var ends = [];
+            addOpenStroke(ends, openPoint);
+            addCloseStroke(ends, closePoint);
+            ends.push(subPixelOptimizePoint(highestPoint), subPixelOptimizePoint(lowestPoint));
+            var itemModel = data.getItemModel(dataIndex);
+            var hasDojiColor = !!itemModel.get(['itemStyle', 'borderColorDoji']);
+            data.setItemLayout(dataIndex, {
+              sign: getSign$1(store, dataIndex, openVal, closeVal, closeDimI, hasDojiColor),
+              initBaseline: openVal > closeVal ? ocHighPoint[vDimIdx] : ocLowPoint[vDimIdx],
+              ends: ends,
+              brushRect: makeBrushRect(lowestVal, highestVal, axisDimVal)
+            });
+          }
+
+          function getPoint(val, axisDimVal) {
+            var p = [];
+            p[cDimIdx] = axisDimVal;
+            p[vDimIdx] = val;
+            return isNaN(axisDimVal) || isNaN(val) ? [NaN, NaN] : coordSys.dataToPoint(p);
+          }
+
+          function addOpenStroke(ends, openPoint) {
+            var point_left = openPoint.slice();
+            var point_base = openPoint.slice();
+            point_left[cDimIdx] = subPixelOptimize$1(point_left[cDimIdx] - candleWidth / 2, 1, true);
+            point_base[cDimIdx] = subPixelOptimize$1(point_base[cDimIdx], 1);
+            ends.push(point_left, point_base);
+          }
+
+          function addCloseStroke(ends, closePoint) {
+            var point_right = closePoint.slice();
+            var point_base = closePoint.slice();
+            point_right[cDimIdx] = subPixelOptimize$1(point_right[cDimIdx] + candleWidth / 2, 1, false);
+            point_base[cDimIdx] = subPixelOptimize$1(point_base[cDimIdx], 1);
+            ends.push(point_right, point_base);
+          }
+
+          function makeBrushRect(lowestVal, highestVal, axisDimVal) {
+            var pmin = getPoint(lowestVal, axisDimVal);
+            var pmax = getPoint(highestVal, axisDimVal);
+            pmin[cDimIdx] -= candleWidth / 2;
+            pmax[cDimIdx] -= candleWidth / 2;
+            return {
+              x: pmin[0],
+              y: pmin[1],
+              width:  candleWidth ,
+              height:  pmax[1] - pmin[1] 
+            };
+          }
+
+          function subPixelOptimizePoint(point) {
+            point[cDimIdx] = subPixelOptimize$1(point[cDimIdx], 1);
+            return point;
+          }
+        }
+
+        function largeProgress(params, data) {
+          // Structure: [sign, x, yhigh, ylow, sign, x, yhigh, ylow, ...]
+          var points = createFloat32Array(params.count * 4);
+          var offset = 0;
+          var point;
+          var tmpIn = [];
+          var tmpOut = [];
+          var dataIndex;
+          var store = data.getStore();
+          var hasDojiColor = !!seriesModel.get(['itemStyle', 'borderColorDoji']);
+
+          while ((dataIndex = params.next()) != null) {
+            var axisDimVal = store.get(cDimI, dataIndex);
+            var openVal = store.get(openDimI, dataIndex);
+            var closeVal = store.get(closeDimI, dataIndex);
+            var lowestVal = store.get(lowestDimI, dataIndex);
+            var highestVal = store.get(highestDimI, dataIndex);
+
+            if (isNaN(axisDimVal) || isNaN(lowestVal) || isNaN(highestVal)) {
+              points[offset++] = NaN;
+              offset += 3;
+              continue;
+            }
+
+            points[offset++] = getSign$1(store, dataIndex, openVal, closeVal, closeDimI, hasDojiColor);
+            tmpIn[cDimIdx] = axisDimVal;
+            tmpIn[vDimIdx] = lowestVal;
+            point = coordSys.dataToPoint(tmpIn, null, tmpOut);
+            points[offset++] = point ? point[0] : NaN;
+            points[offset++] = point ? point[1] : NaN;
+            tmpIn[vDimIdx] = highestVal;
+            point = coordSys.dataToPoint(tmpIn, null, tmpOut);
+            points[offset++] = point ? point[1] : NaN;
+          }
+
+          data.setLayout('largePoints', points);
+        }
+      }
+    };
+    /**
+     * Get the sign of a single data.
+     *
+     * @returns 0 for doji with hasDojiColor: true,
+     *          1 for positive,
+     *          -1 for negative.
+     */
+
+    function getSign$1(store, dataIndex, openVal, closeVal, closeDimI, hasDojiColor) {
+      var sign;
+
+      if (openVal > closeVal) {
+        sign = -1;
+      } else if (openVal < closeVal) {
+        sign = 1;
+      } else {
+        sign = hasDojiColor // When doji color is set, use it instead of color/color0.
+        ? 0 : dataIndex > 0 // If close === open, compare with close of last record
+        ? store.get(closeDimI, dataIndex - 1) <= closeVal ? 1 : -1 : // No record of previous, set to be positive
+        1;
+      }
+
+      return sign;
+    }
+
+    function calculateCandleWidth$1(seriesModel, data) {
+      var baseAxis = seriesModel.getBaseAxis();
+      var extent;
+      var bandWidth = baseAxis.type === 'category' ? baseAxis.getBandWidth() : (extent = baseAxis.getExtent(), Math.abs(extent[1] - extent[0]) / data.count());
+      var barMaxWidth = parsePercent$1(retrieve2(seriesModel.get('barMaxWidth'), bandWidth), bandWidth);
+      var barMinWidth = parsePercent$1(retrieve2(seriesModel.get('barMinWidth'), 1), bandWidth);
+      var barWidth = seriesModel.get('barWidth');
+      return barWidth != null ? parsePercent$1(barWidth, bandWidth) // Put max outer to ensure bar visible in spite of overlap.
+      : Math.max(Math.min(bandWidth / 2, barMaxWidth), barMinWidth);
+    }
+
+    function install$l(registers) {
+      registers.registerChartView(OHLCView);
+      registers.registerSeriesModel(OHLCSeriesModel);
+      registers.registerVisual(ohlcVisual);
+      registers.registerLayout(ohlcLayout);
+    }
+
     function updateRipplePath(rippleGroup, effectCfg) {
       var color = effectCfg.rippleEffectColor || effectCfg.color;
       rippleGroup.eachChild(function (ripplePath) {
@@ -68200,7 +68868,7 @@
       return EffectScatterSeriesModel;
     }(SeriesModel);
 
-    function install$l(registers) {
+    function install$m(registers) {
       registers.registerChartView(EffectScatterView);
       registers.registerSeriesModel(EffectScatterSeriesModel);
       registers.registerLayout(pointsLayout('effectScatter'));
@@ -69523,7 +70191,7 @@
       }
     };
 
-    function install$m(registers) {
+    function install$n(registers) {
       registers.registerChartView(LinesView);
       registers.registerSeriesModel(LinesSeriesModel);
       registers.registerLayout(linesLayout);
@@ -70018,7 +70686,7 @@
       return HeatmapSeriesModel;
     }(SeriesModel);
 
-    function install$n(registers) {
+    function install$o(registers) {
       registers.registerChartView(HeatmapView);
       registers.registerSeriesModel(HeatmapSeriesModel);
     }
@@ -70710,7 +71378,7 @@
       return PictorialBarSeriesModel;
     }(BaseBarSeriesModel);
 
-    function install$o(registers) {
+    function install$p(registers) {
       registers.registerChartView(PictorialBarView);
       registers.registerSeriesModel(PictorialBarSeriesModel);
       registers.registerLayout(registers.PRIORITY.VISUAL.LAYOUT, curry(layout, 'pictorialBar')); // Do layout after other overall layout, which can prepare some information.
@@ -71241,7 +71909,7 @@
       };
     }
 
-    function install$p(registers) {
+    function install$q(registers) {
       registers.registerChartView(ThemeRiverView);
       registers.registerSeriesModel(ThemeRiverSeriesModel);
       registers.registerLayout(themeRiverLayout);
@@ -71317,7 +71985,7 @@
         if (firstCreate) {
           sector.setShape(sectorShape);
           sector.shape.r = layout.r0;
-          updateProps(sector, {
+          initProps(sector, {
             shape: {
               r: layout.r
             }
@@ -72133,7 +72801,7 @@
       });
     }
 
-    function install$q(registers) {
+    function install$r(registers) {
       registers.registerChartView(SunburstView);
       registers.registerSeriesModel(SunburstSeriesModel);
       registers.registerLayout(curry(sunburstLayout, 'sunburst'));
@@ -74238,7 +74906,7 @@
       return shape && (hasOwn(shape, 'pathData') || hasOwn(shape, 'd'));
     }
 
-    function install$r(registers) {
+    function install$s(registers) {
       registers.registerChartView(CustomChartView);
       registers.registerSeriesModel(CustomSeriesModel);
     }
@@ -74274,7 +74942,7 @@
 
         this._axisModel = axisModel;
         this._axisPointerModel = axisPointerModel;
-        this._api = api; // Optimize: `render` will be called repeatly during mouse move.
+        this._api = api; // Optimize: `render` will be called repeatedly during mouse move.
         // So it is power consuming if performing `render` each time,
         // especially on mobile device.
 
@@ -74383,7 +75051,7 @@
        */
 
 
-      BaseAxisPointer.prototype.makeElOption = function (elOption, value, axisModel, axisPointerModel, api) {// Shoule be implemenented by sub-class.
+      BaseAxisPointer.prototype.makeElOption = function (elOption, value, axisModel, axisPointerModel, api) {// Should be implemenented by sub-class.
       };
       /**
        * @protected
@@ -74478,7 +75146,7 @@
             cursor: 'move',
             draggable: true,
             onmousemove: function (e) {
-              // Fot mobile devicem, prevent screen slider on the button.
+              // For mobile device, prevent screen slider on the button.
               stop(e.event);
             },
             onmousedown: bind$1(this._onHandleDragMove, this, 0, 0),
@@ -74720,7 +75388,7 @@
           padding: paddings,
           backgroundColor: bgColor
         }),
-        // Lable should be over axisPointer.
+        // Label should be over axisPointer.
         z2: 10
       };
     } // Do not overflow ec container
@@ -75491,8 +76159,8 @@
         });
         return;
       } // In most case only one axis (or event one series is used). It is
-      // convinient to fetch payload.seriesIndex and payload.dataIndex
-      // dirtectly. So put the first seriesIndex and dataIndex of the first
+      // convenient to fetch payload.seriesIndex and payload.dataIndex
+      // directly. So put the first seriesIndex and dataIndex of the first
       // axis on the payload.
 
 
@@ -75513,7 +76181,7 @@
 
     function dispatchHighDownActually(axesInfo, dispatchAction, api) {
       // FIXME
-      // highlight status modification shoule be a stage of main process?
+      // highlight status modification should be a stage of main process?
       // (Consider confilct (e.g., legend and axisPointer) and setOption)
       var zr = api.getZr();
       var highDownKey = 'axisPointerLastHighlights';
@@ -75577,7 +76245,7 @@
       return !point || point[0] == null || isNaN(point[0]) || point[1] == null || isNaN(point[1]);
     }
 
-    function install$s(registers) {
+    function install$t(registers) {
       // CartesianAxisPointer is not supposed to be required here. But consider
       // echarts.simple.js and online build tooltip, which only require gridSimple,
       // CartesianAxisPointer should be able to required somewhere.
@@ -75612,9 +76280,9 @@
       }, axisTrigger);
     }
 
-    function install$t(registers) {
+    function install$u(registers) {
       use(install$5);
-      use(install$s);
+      use(install$t);
     }
 
     var PolarAxisPointer =
@@ -76955,8 +77623,8 @@
       return PolarView;
     }(ComponentView);
 
-    function install$u(registers) {
-      use(install$s);
+    function install$v(registers) {
+      use(install$t);
       AxisView.registerAxisPointerClass('PolarAxisPointer', PolarAxisPointer);
       registers.registerCoordinateSystem('polar', polarCreator);
       registers.registerComponentModel(PolarModel);
@@ -77572,8 +78240,8 @@
       return SingleView;
     }(ComponentView);
 
-    function install$v(registers) {
-      use(install$s);
+    function install$w(registers) {
+      use(install$t);
       AxisView.registerAxisPointerClass('SingleAxisPointer', SingleAxisPointer);
       registers.registerComponentView(SingleView); // Axis
 
@@ -78520,7 +79188,7 @@
       return coordSys;
     }
 
-    function install$w(registers) {
+    function install$x(registers) {
       registers.registerComponentModel(CalendarModel);
       registers.registerComponentView(CalendarView);
       registers.registerCoordinateSystem('calendar', Calendar);
@@ -79149,7 +79817,7 @@
       }
     }
 
-    function install$x(registers) {
+    function install$y(registers) {
       registers.registerComponentModel(GraphicComponentModel);
       registers.registerComponentView(GraphicComponentView);
       registers.registerPreprocessor(function (option) {
@@ -80273,7 +80941,7 @@
       });
     }
 
-    function install$y(registers) {
+    function install$z(registers) {
       registers.registerComponentModel(SelectDataZoomModel);
       registers.registerComponentView(SelectDataZoomView);
       installCommon(registers);
@@ -80489,7 +81157,7 @@
 
             features[featureName] = feature;
           } else {
-            feature = features[oldName]; // If feature does not exsit.
+            feature = features[oldName]; // If feature does not exist.
 
             if (!feature) {
               return;
@@ -80534,7 +81202,7 @@
 
         function createIconPaths(featureModel, feature, featureName) {
           var iconStyleModel = featureModel.getModel('iconStyle');
-          var iconStyleEmphasisModel = featureModel.getModel(['emphasis', 'iconStyle']); // If one feature has mutiple icon. they are orginaized as
+          var iconStyleEmphasisModel = featureModel.getModel(['emphasis', 'iconStyle']); // If one feature has multiple icons, they are organized as
           // {
           //     icon: {
           //         foo: '',
@@ -81643,7 +82311,7 @@
           area.range = area.range || []; // convert coordRange to global range and set panelId.
 
           if (targetInfo && targetInfo !== true) {
-            area.panelId = targetInfo.panelId; // (1) area.range shoule always be calculate from coordRange but does
+            area.panelId = targetInfo.panelId; // (1) area.range should always be calculate from coordRange but does
             // not keep its original value, for the sake of the dataZoom scenario,
             // where area.coordRange remains unchanged but area.range may be changed.
             // (2) Only support converting one coordRange to pixel range in brush
@@ -81678,7 +82346,7 @@
       };
       /**
        * If return Object, a coord found.
-       * If reutrn true, global found.
+       * If return true, global found.
        * Otherwise nothing found.
        */
 
@@ -82127,7 +82795,7 @@
       return dzOptions;
     });
 
-    function install$z(registers) {
+    function install$A(registers) {
       registers.registerComponentModel(ToolboxModel);
       registers.registerComponentView(ToolboxView);
       registerFeature('saveAsImage', SaveAsImage);
@@ -82135,7 +82803,7 @@
       registerFeature('dataView', DataView);
       registerFeature('dataZoom', DataZoomFeature);
       registerFeature('restore', RestoreOption);
-      use(install$y);
+      use(install$z);
     }
 
     var TooltipModel =
@@ -83333,8 +84001,8 @@
         if (cmpt) {
           tooltipModelCascade.push(cmpt);
         } // In most cases, component tooltip formatter has different params with series tooltip formatter,
-        // so that they can not share the same formatter. Since the global tooltip formatter is used for series
-        // by convension, we do not use it as the default formatter for component.
+        // so that they cannot share the same formatter. Since the global tooltip formatter is used for series
+        // by convention, we do not use it as the default formatter for component.
 
 
         tooltipModelCascade.push({
@@ -83615,7 +84283,7 @@
 
       if (gapH != null) {
         // Add extra 2 pixels for this case:
-        // At present the "values" in defaut tooltip are using CSS `float: right`.
+        // At present the "values" in default tooltip are using CSS `float: right`.
         // When the right edge of the tooltip box is on the right side of the
         // viewport, the `float` layout might push the "values" to the second line.
         if (x + width + gapH + 2 > viewWidth) {
@@ -83740,8 +84408,8 @@
       }
     }
 
-    function install$A(registers) {
-      use(install$s);
+    function install$B(registers) {
+      use(install$t);
       registers.registerComponentModel(TooltipModel);
       registers.registerComponentView(TooltipView);
       /**
@@ -84578,7 +85246,7 @@
       return BrushFeature;
     }(ToolboxFeature);
 
-    function install$B(registers) {
+    function install$C(registers) {
       registers.registerComponentView(BrushView);
       registers.registerComponentModel(BrushModel);
       registers.registerPreprocessor(brushPreprocessor);
@@ -84822,7 +85490,7 @@
       return TitleView;
     }(ComponentView);
 
-    function install$C(registers) {
+    function install$D(registers) {
       registers.registerComponentModel(TitleModel);
       registers.registerComponentView(TitleView);
     }
@@ -85989,7 +86657,7 @@
       return obj.hasOwnProperty(attr);
     }
 
-    function install$D(registers) {
+    function install$E(registers) {
       registers.registerComponentModel(SliderTimelineModel);
       registers.registerComponentView(SliderTimelineView);
       registers.registerSubTypeDefaulter('timeline', function () {
@@ -86579,7 +87247,7 @@
       return mpData;
     }
 
-    function install$E(registers) {
+    function install$F(registers) {
       registers.registerComponentModel(MarkPointModel);
       registers.registerComponentView(MarkPointView);
       registers.registerPreprocessor(function (opt) {
@@ -86989,7 +87657,7 @@
       };
     }
 
-    function install$F(registers) {
+    function install$G(registers) {
       registers.registerComponentModel(MarkLineModel);
       registers.registerComponentView(MarkLineView);
       registers.registerPreprocessor(function (opt) {
@@ -87389,7 +88057,7 @@
       return areaData;
     }
 
-    function install$G(registers) {
+    function install$H(registers) {
       registers.registerComponentModel(MarkAreaModel);
       registers.registerComponentView(MarkAreaView);
       registers.registerPreprocessor(function (opt) {
@@ -88358,7 +89026,7 @@
       registers.registerAction('legendUnSelect', 'legendunselected', curry(legendSelectActionHandler, 'unSelect'));
     }
 
-    function install$H(registers) {
+    function install$I(registers) {
       registers.registerComponentModel(LegendModel);
       registers.registerComponentView(LegendView);
       registers.registerProcessor(registers.PRIORITY.PROCESSOR.SERIES_FILTER, legendFilter);
@@ -88899,16 +89567,16 @@
       });
     }
 
-    function install$I(registers) {
-      use(install$H);
+    function install$J(registers) {
+      use(install$I);
       registers.registerComponentModel(ScrollableLegendModel);
       registers.registerComponentView(ScrollableLegendView);
       installScrollableLegendAction(registers);
     }
 
-    function install$J(registers) {
-      use(install$H);
+    function install$K(registers) {
       use(install$I);
+      use(install$J);
     }
 
     var InsideZoomModel =
@@ -89307,7 +89975,7 @@
       }
     };
 
-    function install$K(registers) {
+    function install$L(registers) {
       installCommon(registers);
       registers.registerComponentModel(InsideZoomModel);
       registers.registerComponentView(InsideZoomView);
@@ -89564,7 +90232,7 @@
           scaleY: otherAxisInverse ? -1 : 1,
           scaleX: 1,
           rotation: Math.PI / 2
-        } // Dont use Math.PI, considering shadow direction.
+        } // Don't use Math.PI, considering shadow direction.
         : {
           scaleY: otherAxisInverse ? -1 : 1,
           scaleX: -1,
@@ -90230,7 +90898,7 @@
       };
 
       SliderZoomView.prototype._findCoordRect = function () {
-        // Find the grid coresponding to the first axis referred by dataZoom.
+        // Find the grid corresponding to the first axis referred by dataZoom.
         var rect;
         var coordSysInfoList = collectReferCoordSysModelInfo(this.dataZoomModel).infoList;
 
@@ -90273,15 +90941,15 @@
       return orient === 'vertical' ? 'ns-resize' : 'ew-resize';
     }
 
-    function install$L(registers) {
+    function install$M(registers) {
       registers.registerComponentModel(SliderZoomModel);
       registers.registerComponentView(SliderZoomView);
       installCommon(registers);
     }
 
-    function install$M(registers) {
-      use(install$K);
-      use(install$L); // Do not install './dataZoomSelect',
+    function install$N(registers) {
+      use(install$L);
+      use(install$M); // Do not install './dataZoomSelect',
       // since it only work for toolbox dataZoom.
     }
 
@@ -90512,7 +91180,7 @@
        * PENDING:
        * delete this method if no outer usage.
        *
-       * Return  Concrete dimention. If return null/undefined, no dimension used.
+       * Return  Concrete dimension. If null/undefined is returned, no dimension is used.
        */
       // getDataDimension(data: SeriesData) {
       //     const optDim = this.option.dimension;
@@ -90584,7 +91252,7 @@
             base.inRange = {
               color: thisOption.color.slice().reverse()
             };
-          } // Compatible with previous logic, always give a defautl color, otherwise
+          } // Compatible with previous logic, always give a default color, otherwise
           // simple config with no inRange and outOfRange will not work.
           // Originally we use visualMap.color as the default color, but setOption at
           // the second time the default color will be erased. So we change to use
@@ -90804,7 +91472,7 @@
         var range = this.option.range;
 
         if (!range || range.auto) {
-          // `range` should always be array (so we dont use other
+          // `range` should always be array (so we don't use other
           // value like 'auto') for user-friend. (consider getOption).
           dataExtent.auto = 1;
           this.option.range = dataExtent;
@@ -91357,7 +92025,7 @@
           draggable: true,
           drift: onDrift,
           onmousemove: function (e) {
-            // Fot mobile devicem, prevent screen slider on the button.
+            // For mobile device, prevent screen slider on the button.
             stop(e.event);
           },
           ondragend: onDragEnd,
@@ -91485,7 +92153,7 @@
         var visualMapModel = this.visualMapModel;
         var handleEnds = this._handleEnds;
         var sizeExtent = [0, visualMapModel.itemSize[1]];
-        sliderMove(delta, handleEnds, sizeExtent, handleIndex, // cross is forbiden
+        sliderMove(delta, handleEnds, sizeExtent, handleIndex, // cross is forbidden
         0);
         var dataExtent = visualMapModel.getExtent(); // Update data interval.
 
@@ -91536,7 +92204,7 @@
 
       ContinuousView.prototype._makeColorGradient = function (dataInterval, opts) {
         // Considering colorHue, which is not linear, so we have to sample
-        // to calculate gradient color stops, but not only caculate head
+        // to calculate gradient color stops, but not only calculate head
         // and tail.
         var sampleNumber = 100; // Arbitrary value.
 
@@ -91898,7 +92566,7 @@
         cursor: cursor,
         drift: onDrift,
         onmousemove: function (e) {
-          // Fot mobile devicem, prevent screen slider on the button.
+          // For mobile device, prevent screen slider on the button.
           stop(e.event);
         },
         ondragend: onDragEnd
@@ -92109,7 +92777,7 @@
       registers.registerPreprocessor(visualMapPreprocessor);
     }
 
-    function install$N(registers) {
+    function install$O(registers) {
       registers.registerComponentModel(ContinuousModel);
       registers.registerComponentView(ContinuousView);
       installCommon$1(registers);
@@ -92514,7 +93182,7 @@
             item.close = [1, 1];
           } else {
             // `min` `max` is legacy option.
-            // `lt` `gt` `lte` `gte` is recommanded.
+            // `lt` `gt` `lte` `gte` is recommended.
             var interval = item.interval = [];
             var close_1 = item.close = [0, 0];
             var closeList = [1, 0, 1];
@@ -92764,15 +93432,15 @@
       return PiecewiseVisualMapView;
     }(VisualMapView);
 
-    function install$O(registers) {
+    function install$P(registers) {
       registers.registerComponentModel(PiecewiseModel);
       registers.registerComponentView(PiecewiseVisualMapView);
       installCommon$1(registers);
     }
 
-    function install$P(registers) {
-      use(install$N);
-      use(install$O); // Do not install './dataZoomSelect',
+    function install$Q(registers) {
+      use(install$O);
+      use(install$P); // Do not install './dataZoomSelect',
       // since it only work for toolbox dataZoom.
     }
 
@@ -93007,7 +93675,7 @@
       });
     }
 
-    function install$Q(registers) {
+    function install$R(registers) {
       registers.registerPreprocessor(ariaPreprocessor);
       registers.registerVisual(registers.PRIORITY.VISUAL.ARIA, ariaVisual);
     }
@@ -93296,12 +93964,12 @@
 
     var filterTransform = {
       type: 'echarts:filter',
-      // PEDING: enhance to filter by index rather than create new data
+      // PENDING: enhance to filter by index rather than create new data
       transform: function (params) {
         // [Caveat] Fail-Fast:
-        // Do not return the whole dataset unless user config indicate it explicitly.
-        // For example, if no condition specified by mistake, return an empty result
-        // is better than return the entire raw soruce for user to find the mistake.
+        // Do not return the whole dataset unless user config indicates it explicitly.
+        // For example, if no condition is specified by mistake, returning an empty result
+        // is better than returning the entire raw source for the user to find the mistake.
         var upstream = params.upstream;
         var rawItem;
         var condition = parseConditionalExpression(params.config, {
@@ -93493,7 +94161,7 @@
       }
     };
 
-    function install$R(registers) {
+    function install$S(registers) {
       registers.registerTransform(filterTransform);
       registers.registerTransform(sortTransform);
     }
@@ -93554,7 +94222,7 @@
       return DatasetView;
     }(ComponentView);
 
-    function install$S(registers) {
+    function install$T(registers) {
       registers.registerComponentModel(DatasetModel);
       registers.registerComponentView(DatasetView);
     }
@@ -95436,7 +96104,7 @@
     //     }]
     // });
 
-    use([install$2, install$3, install$4, install$6, install$8, install$a, install$b, install$c, install$d, install$e, install$f, install$h, install$i, install$j, install$k, install$l, install$m, install$n, install$o, install$p, install$q, install$r]); // -------------------
+    use([install$2, install$3, install$4, install$6, install$8, install$a, install$b, install$c, install$d, install$e, install$f, install$h, install$i, install$j, install$k, install$l, install$m, install$n, install$o, install$p, install$q, install$r, install$s]); // -------------------
     // Coordinate systems
     // -------------------
     // All of the axis modules have been included in the
@@ -95451,7 +96119,7 @@
     //     series: [{...}]
     // });
 
-    use(install$t); // `polar` coordinate system, for example:
+    use(install$u); // `polar` coordinate system, for example:
     // chart.setOption({
     //     polar: {...},
     //     radiusAxis: {...},
@@ -95461,7 +96129,7 @@
     //     }]
     // });
 
-    use(install$u); // `geo` coordinate system, for example:
+    use(install$v); // `geo` coordinate system, for example:
     // chart.setOption({
     //     geo: {...},
     //     series: [{
@@ -95476,7 +96144,7 @@
     //     series: [{type: 'themeRiver', ...}]
     // });
 
-    use(install$v); // `parallel` coordinate system, only work for parallel series, for example:
+    use(install$w); // `parallel` coordinate system, only work for parallel series, for example:
     // chart.setOption({
     //     parallel: {...},
     //     parallelAxis: [{...}, ...],
@@ -95493,7 +96161,7 @@
     //     }]
     // );
 
-    use(install$w); // ------------------
+    use(install$x); // ------------------
     // Other components
     // ------------------
     // `graphic` component, for example:
@@ -95501,17 +96169,17 @@
     //     graphic: {...}
     // });
 
-    use(install$x); // `toolbox` component, for example:
+    use(install$y); // `toolbox` component, for example:
     // chart.setOption({
     //     toolbox: {...}
     // });
 
-    use(install$z); // `tooltip` component, for example:
+    use(install$A); // `tooltip` component, for example:
     // chart.setOption({
     //     tooltip: {...}
     // });
 
-    use(install$A); // `axisPointer` component, for example:
+    use(install$B); // `axisPointer` component, for example:
     // chart.setOption({
     //     tooltip: {axisPointer: {...}, ...}
     // });
@@ -95520,7 +96188,7 @@
     //     axisPointer: {...}
     // });
 
-    use(install$s); // `brush` component, for example:
+    use(install$t); // `brush` component, for example:
     // chart.setOption({
     //     brush: {...}
     // });
@@ -95529,75 +96197,75 @@
     //     tooltip: {feature: {brush: {...}}
     // })
 
-    use(install$B); // `title` component, for example:
+    use(install$C); // `title` component, for example:
     // chart.setOption({
     //     title: {...}
     // });
 
-    use(install$C); // `timeline` component, for example:
+    use(install$D); // `timeline` component, for example:
     // chart.setOption({
     //     timeline: {...}
     // });
 
-    use(install$D); // `markPoint` component, for example:
+    use(install$E); // `markPoint` component, for example:
     // chart.setOption({
     //     series: [{markPoint: {...}}]
     // });
 
-    use(install$E); // `markLine` component, for example:
+    use(install$F); // `markLine` component, for example:
     // chart.setOption({
     //     series: [{markLine: {...}}]
     // });
 
-    use(install$F); // `markArea` component, for example:
+    use(install$G); // `markArea` component, for example:
     // chart.setOption({
     //     series: [{markArea: {...}}]
     // });
 
-    use(install$G); // `legend` component not scrollable. for example:
+    use(install$H); // `legend` component not scrollable. for example:
     // chart.setOption({
     //     legend: {...}
     // });
 
-    use(install$J); // `dataZoom` component including both `dataZoomInside` and `dataZoomSlider`.
+    use(install$K); // `dataZoom` component including both `dataZoomInside` and `dataZoomSlider`.
 
-    use(install$M); // `dataZoom` component providing drag, pinch, wheel behaviors
+    use(install$N); // `dataZoom` component providing drag, pinch, wheel behaviors
     // inside coodinate system, for example:
     // chart.setOption({
     //     dataZoom: {type: 'inside'}
     // });
 
-    use(install$K); // `dataZoom` component providing a slider bar, for example:
+    use(install$L); // `dataZoom` component providing a slider bar, for example:
     // chart.setOption({
     //     dataZoom: {type: 'slider'}
     // });
 
-    use(install$L); // `visualMap` component including both `visualMapContinuous` and `visualMapPiecewise`.
+    use(install$M); // `visualMap` component including both `visualMapContinuous` and `visualMapPiecewise`.
 
-    use(install$P); // `visualMap` component providing continuous bar, for example:
+    use(install$Q); // `visualMap` component providing continuous bar, for example:
     // chart.setOption({
     //     visualMap: {type: 'continuous'}
     // });
 
-    use(install$N); // `visualMap` component providing pieces bar, for example:
+    use(install$O); // `visualMap` component providing pieces bar, for example:
     // chart.setOption({
     //     visualMap: {type: 'piecewise'}
     // });
 
-    use(install$O); // `aria` component providing aria, for example:
+    use(install$P); // `aria` component providing aria, for example:
     // chart.setOption({
     //     aria: {...}
     // });
 
-    use(install$Q); // dataset transform
+    use(install$R); // dataset transform
     // chart.setOption({
     //     dataset: {
     //          transform: []
     //     }
     // });
 
-    use(install$R);
-    use(install$S); // universal transition
+    use(install$S);
+    use(install$T); // universal transition
     // chart.setOption({
     //     series: {
     //         universalTransition: { enabled: true }

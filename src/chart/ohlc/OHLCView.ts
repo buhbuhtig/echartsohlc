@@ -243,12 +243,12 @@ class NormalBoxPath extends Path<NormalBoxPathProps> {
 
         if (this.__simpleBox) {
             ctx.moveTo(ends[4][0], ends[4][1]);
-            ctx.lineTo(ends[6][0], ends[6][1]);
+            ctx.lineTo(ends[5][0], ends[5][1]);
         }
         else {
 
             ctx.moveTo(ends[4][0], ends[4][1]);
-            ctx.lineTo(ends[6][0], ends[6][1]);
+            ctx.lineTo(ends[5][0], ends[5][1]);
 
             ctx.moveTo(ends[0][0], ends[0][1]);
             ctx.lineTo(ends[1][0], ends[1][1]);

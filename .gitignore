@@ -206,3 +206,5 @@ todo
 /features.js
 /features.d.ts
 *.tgz
+i18n/
+dist/

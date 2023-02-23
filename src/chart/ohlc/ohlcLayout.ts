@@ -104,9 +104,7 @@ const ohlcLayout: StageHandler = {
 
                 ends.push(
                     subPixelOptimizePoint(highestPoint),
-                    subPixelOptimizePoint(ocHighPoint),
-                    subPixelOptimizePoint(lowestPoint),
-                    subPixelOptimizePoint(ocLowPoint)
+                    subPixelOptimizePoint(lowestPoint)
                 );
 
                 const itemModel = data.getItemModel<OHLCDataItemOption>(dataIndex);
@@ -128,18 +126,18 @@ const ohlcLayout: StageHandler = {
                     ? [NaN, NaN]
                     : coordSys.dataToPoint(p);
             }
-            function addOpenStroke(ends: number[][], point: number[]) {
-                const point_left = point.slice();
-                const point_base = point.slice();
+            function addOpenStroke(ends: number[][], openPoint: number[]) {
+                const point_left = openPoint.slice();
+                const point_base = openPoint.slice();
                 point_left[cDimIdx] = subPixelOptimize(
                     point_left[cDimIdx] - candleWidth / 2, 1, true
                 );
                 point_base[cDimIdx] = subPixelOptimize(point_base[cDimIdx], 1);
                 ends.push(point_left, point_base);
             }
-            function addCloseStroke(ends: number[][], point: number[]) {
-                const point_right = point.slice();
-                const point_base = point.slice();
+            function addCloseStroke(ends: number[][], closePoint: number[]) {
+                const point_right = closePoint.slice();
+                const point_base = closePoint.slice();
                 point_right[cDimIdx] = subPixelOptimize(
                     point_right[cDimIdx] + candleWidth / 2, 1, false
                 );

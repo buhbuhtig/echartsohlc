@@ -15790,23 +15790,23 @@
      */
 
     /*
-    * Licensed to the Apache Software Foundation (ASF) under one
-    * or more contributor license agreements.  See the NOTICE file
-    * distributed with this work for additional information
-    * regarding copyright ownership.  The ASF licenses this file
-    * to you under the Apache License, Version 2.0 (the
-    * "License"); you may not use this file except in compliance
-    * with the License.  You may obtain a copy of the License at
-    *
-    *   http://www.apache.org/licenses/LICENSE-2.0
-    *
-    * Unless required by applicable law or agreed to in writing,
-    * software distributed under the License is distributed on an
-    * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    * KIND, either express or implied.  See the License for the
-    * specific language governing permissions and limitations
-    * under the License.
-    */
+     * Licensed to the Apache Software Foundation (ASF) under one
+     * or more contributor license agreements.  See the NOTICE file
+     * distributed with this work for additional information
+     * regarding copyright ownership.  The ASF licenses this file
+     * to you under the Apache License, Version 2.0 (the
+     * "License"); you may not use this file except in compliance
+     * with the License.  You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing,
+     * software distributed under the License is distributed on an
+     * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     * KIND, either express or implied.  See the License for the
+     * specific language governing permissions and limitations
+     * under the License.
+     */
 
     /**
      * Language: English.
@@ -15873,6 +15873,7 @@
           treemap: 'Treemap',
           boxplot: 'Boxplot',
           candlestick: 'Candlestick',
+          ohlc: 'OHLC',
           k: 'K line chart',
           heatmap: 'Heat map',
           map: 'Map',
@@ -16025,6 +16026,7 @@
           treemap: '矩形树图',
           boxplot: '箱型图',
           candlestick: 'K线图',
+          ohlc: 'OHLC图',
           k: 'K线图',
           heatmap: '热力图',
           map: '地图',
@@ -17707,6 +17709,7 @@
       sankey: 'SankeyChart',
       boxplot: 'BoxplotChart',
       candlestick: 'CandlestickChart',
+      ohlc: 'OHLCChart',
       effectScatter: 'EffectScatterChart',
       lines: 'LinesChart',
       heatmap: 'HeatmapChart',
@@ -19746,11 +19749,7 @@
 
 
       if (obj) {
-        var dimensions_1 = [];
-        each(obj, function (value, key) {
-          dimensions_1.push(key);
-        });
-        return dimensions_1;
+        return keys(obj);
       }
     } // Consider dimensions defined like ['A', 'price', 'B', 'price', 'C', 'price'],
     // which is reasonable. But dimension name is duplicated.
@@ -21231,7 +21230,7 @@
     /** @class */
     function () {
       function DataStore() {
-        this._chunks = []; // It will not be calculated util needed.
+        this._chunks = []; // It will not be calculated until needed.
 
         this._rawExtent = [];
         this._extent = [];
@@ -21649,7 +21648,7 @@
             // When the `value` is at the middle of `this.get(dim, i)` and `this.get(dim, i+1)`,
             // we'd better not push both of them to `nearestIndices`, otherwise it is easy to
             // get more than one item in `nearestIndices` (more specifically, in `tooltip`).
-            // So we chose the one that `diff >= 0` in this csae.
+            // So we choose the one that `diff >= 0` in this case.
             // But if `this.get(dim, i)` and `this.get(dim, j)` get the same value, both of them
             // should be push to `nearestIndices`.
             if (dist < minDist || dist === minDist && diff >= 0 && minDiff < 0) {
@@ -22001,7 +22000,7 @@
           maxArea = -1;
           nextRawIndex = frameStart;
           var firstNaNIndex = -1;
-          var countNaN = 0; // Find a point from current frame that construct a triangel with largest area with previous selected point
+          var countNaN = 0; // Find a point from current frame that construct a triangle with largest area with previous selected point
           // And the average of next frame.
 
           for (var idx = frameStart; idx < frameEnd; idx++) {
@@ -22797,8 +22796,8 @@
       var inlineName = multipleSeries ? seriesName : itemName;
       return createTooltipMarkup('section', {
         header: seriesName,
-        // When series name not specified, do not show a header line with only '-'.
-        // This case alway happen in tooltip.trigger: 'item'.
+        // When series name is not specified, do not show a header line with only '-'.
+        // This case always happens in tooltip.trigger: 'item'.
         noHeader: multipleSeries || !seriesNameSpecified,
         sortParam: sortParam,
         blocks: [createTooltipMarkup('nameValue', {
@@ -23410,7 +23409,7 @@
     }
 
     function dataTaskProgress(param, context) {
-      // Avoid repead cloneShallow when data just created in reset.
+      // Avoid repeat cloneShallow when data just created in reset.
       if (context.outputData && param.end > context.outputData.count()) {
         context.model.getRawData().cloneShallow(context.outputData);
       }
@@ -24869,6 +24868,16 @@
           // borderColor0: '#09a443'
 
         }
+      },
+      ohlc: {
+        itemStyle: {
+          color: '#f64e56',
+          color0: '#54ea92',
+          borderColor: '#f64e56',
+          borderColor0: '#54ea92' // borderColor: '#ca2824',
+          // borderColor0: '#09a443'
+
+        }
       }
     };
     theme.categoryAxis.splitLine.show = false;
@@ -25167,7 +25176,7 @@
       }
     }
 
-    // Inlucdes: pieSelect, pieUnSelect, pieToggleSelect, mapSelect, mapUnSelect, mapToggleSelect
+    // Includes: pieSelect, pieUnSelect, pieToggleSelect, mapSelect, mapUnSelect, mapToggleSelect
 
     function createLegacyDataSelectAction(seriesType, ecRegisterAction) {
       function getSeriesIndices(ecModel, payload) {
@@ -39041,7 +39050,7 @@
         var polyline = this._polyline;
         var polygon = this._polygon;
         var lineGroup = this._lineGroup;
-        var hasAnimation = seriesModel.get('animation');
+        var hasAnimation = !ecModel.ssr && seriesModel.isAnimationEnabled();
         var isAreaChart = !areaStyleModel.isEmpty();
         var valueOrigin = areaStyleModel.get('origin');
         var dataCoordInfo = prepareDataCoordInfo(coordSys, data, valueOrigin);
@@ -39421,8 +39430,8 @@
           seriesDuration = seriesDuration(null);
         }
 
-        var seriesDalay = seriesModel.get('animationDelay') || 0;
-        var seriesDalayValue = isFunction(seriesDalay) ? seriesDalay(null) : seriesDalay;
+        var seriesDelay = seriesModel.get('animationDelay') || 0;
+        var seriesDelayValue = isFunction(seriesDelay) ? seriesDelay(null) : seriesDelay;
         data.eachItemGraphicEl(function (symbol, idx) {
           var el = symbol;
 
@@ -39467,7 +39476,7 @@
               ratio = 1 - ratio;
             }
 
-            var delay = isFunction(seriesDalay) ? seriesDalay(idx) : seriesDuration * ratio + seriesDalayValue;
+            var delay = isFunction(seriesDelay) ? seriesDelay(idx) : seriesDuration * ratio + seriesDelayValue;
             var symbolPath = el.getSymbolPath();
             var text = symbolPath.getTextContent();
             el.attr({
@@ -40953,7 +40962,7 @@
           var sectorShape = sector.shape;
           var animateProperty = isRadial ? 'r' : 'endAngle';
           var animateTarget = {};
-          sectorShape[animateProperty] = isRadial ? 0 : layout.startAngle;
+          sectorShape[animateProperty] = isRadial ? layout.r0 : layout.startAngle;
           animateTarget[animateProperty] = layout[animateProperty];
           (isUpdate ? updateProps : initProps)(sector, {
             shape: animateTarget // __value: typeof dataValue === 'string' ? parseInt(dataValue, 10) : dataValue
@@ -44001,7 +44010,7 @@
           handleAutoShown: function () {
             return true;
           }
-        }); // FIXME Not use a seperate text group?
+        }); // FIXME Not use a separate text group?
 
         var transformGroup = new Group({
           x: opt.position[0],
@@ -44509,7 +44518,7 @@
             // in category axis.
             // (2) Compatible with previous version, which always use formatted label as
             // input. But in interval scale the formatted label is like '223,445', which
-            // maked user repalce ','. So we modify it to return original val but remain
+            // maked user replace ','. So we modify it to return original val but remain
             // it as 'string' to avoid error in replacing.
             axis.type === 'category' ? rawLabel : axis.type === 'value' ? tickValue + '' : tickValue, index) : textColor
           })
