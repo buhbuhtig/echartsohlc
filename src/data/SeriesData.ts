@@ -685,7 +685,20 @@ class SeriesData<
      * be erased because of the filtering.
      */
     getApproximateExtent(dim: SeriesDimensionLoose): [number, number] {
-        return this._approximateExtent[dim] || this._store.getDataExtent(this._getStoreDimIndex(dim));
+        const ApplyMultiplier = (): [number, number] => {
+            const m = this.hostModel.option.multiplier;
+            if (m) {
+                const [min, max]: [number, number] = this._store.getDataExtent(this._getStoreDimIndex(dim));
+                return [min * m, max * m];
+            }
+            else {
+                return this._store.getDataExtent(this._getStoreDimIndex(dim));
+            };
+        };
+
+
+
+        return this._approximateExtent[dim] || ApplyMultiplier();
     }
 
     /**

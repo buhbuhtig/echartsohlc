@@ -80,15 +80,17 @@ const candlestickLayout: StageHandler = {
         };
 
         function normalProgress(params: StageHandlerProgressParams, data: SeriesData) {
+            let m = data.hostModel.option.multiplier || 1.0;
             let dataIndex;
             const store = data.getStore();
             while ((dataIndex = params.next()) != null) {
 
                 const axisDimVal = store.get(cDimI, dataIndex) as number;
-                const openVal = store.get(openDimI, dataIndex) as number;
-                const closeVal = store.get(closeDimI, dataIndex) as number;
-                const lowestVal = store.get(lowestDimI, dataIndex) as number;
-                const highestVal = store.get(highestDimI, dataIndex) as number;
+                const openVal = (store.get(openDimI, dataIndex) as number) * m;
+                const closeVal = (store.get(closeDimI, dataIndex) as number) * m;
+                const lowestVal = (store.get(lowestDimI, dataIndex) as number) * m;
+                const highestVal = (store.get(highestDimI, dataIndex) as number) * m;
+
 
                 const ocLow = Math.min(openVal, closeVal);
                 const ocHigh = Math.max(openVal, closeVal);
@@ -200,6 +202,7 @@ const candlestickLayout: StageHandler = {
 
         function largeProgress(params: StageHandlerProgressParams, data: SeriesData) {
             // Structure: [sign, x, yhigh, ylow, sign, x, yhigh, ylow, ...]
+            let m = data.hostModel.option.multiplier || 1.0;
             const points = createFloat32Array(params.count * 4);
             let offset = 0;
             let point;
@@ -211,10 +214,10 @@ const candlestickLayout: StageHandler = {
 
             while ((dataIndex = params.next()) != null) {
                 const axisDimVal = store.get(cDimI, dataIndex) as number;
-                const openVal = store.get(openDimI, dataIndex) as number;
-                const closeVal = store.get(closeDimI, dataIndex) as number;
-                const lowestVal = store.get(lowestDimI, dataIndex) as number;
-                const highestVal = store.get(highestDimI, dataIndex) as number;
+                const openVal = (store.get(openDimI, dataIndex) as number) * m;
+                const closeVal = (store.get(closeDimI, dataIndex) as number) * m;
+                const lowestVal = (store.get(lowestDimI, dataIndex) as number) * m;
+                const highestVal = (store.get(highestDimI, dataIndex) as number) * m;
 
                 if (isNaN(axisDimVal) || isNaN(lowestVal) || isNaN(highestVal)) {
                     points[offset++] = NaN;

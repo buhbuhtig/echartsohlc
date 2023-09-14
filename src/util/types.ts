@@ -1555,6 +1555,7 @@ export interface SeriesOption<
     ColorPaletteOptionMixin,
     StatesOptionMixin<StateOption, StatesMixin>
 {
+    multiplier?: number,
     mainType?: 'series'
 
     silent?: boolean
