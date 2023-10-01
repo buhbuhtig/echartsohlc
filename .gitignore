@@ -213,3 +213,4 @@ dist/echarts.js
 dist/echarts.min.js
 dist/echarts.simple.min.js
 dist/echarts.js.map
+/i18n/
