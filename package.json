@@ -40,7 +40,7 @@
     "i18n/*.js"
   ],
   "scripts": {
-    "build": "node build/build.js --type all,common,simple --min",
+    "build": "node build/build.js --type all,common,simple,darktrend --min",
     "build:esm": "node build/build.js --type all --min --format esm",
     "build:i18n": "node build/build-i18n.js",
     "build:lib": "node build/build.js --prepublish",
