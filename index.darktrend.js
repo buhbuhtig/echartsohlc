@@ -43,6 +43,10 @@
 */
 import { use } from './lib/extension.js';
 export * from './lib/export/core.js';
+//import * as zrender from 'zrender';
+import { Circle } from 'zrender';
+import { Line } from 'zrender';
+
 //import { install as SVGRenderer } from './lib/renderer/installSVGRenderer.js'; // del
 import { install as CanvasRenderer } from './lib/renderer/installCanvasRenderer.js'; // ok
 import { install as LineChart } from './lib/chart/line/install.js';  //ok
@@ -88,3 +92,5 @@ use([GraphicComponent,  //ok
       DatasetComponent, //ok
       BrushComponent //ok
     ]);
+use([Line,Circle])
+//use(Object.values(zrender));
