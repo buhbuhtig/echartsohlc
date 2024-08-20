@@ -51,6 +51,8 @@ import { Line } from 'zrender';
 import { install as CanvasRenderer } from './lib/renderer/installCanvasRenderer.js'; // ok
 import { install as LineChart } from './lib/chart/line/install.js';  //ok
 import { install as BarChart } from './lib/chart/bar/install.js'; //ok
+import { GraphChart  } from './lib/export/charts.js';
+//import { install as GraphChart}  from './lib/chart/graph/install.js'; //ok
 import { install as CandlestickChart } from './lib/chart/candlestick/install.js';//ok
 // import { install as PieChart } from './lib/chart/pie/install.js'; //del
 import { install as ScatterChart } from './lib/chart/scatter/install.js'; //ok
@@ -75,7 +77,8 @@ use([LineChart, // ok
     BarChart, //ok
     // PieChart, //del
     ScatterChart, // ok
-    CandlestickChart //ok
+    CandlestickChart, //ok
+    GraphChart //ok
 ]);
 use([GraphicComponent,  //ok
     TooltipComponent, //OK
@@ -92,5 +95,5 @@ use([GraphicComponent,  //ok
       DatasetComponent, //ok
       BrushComponent //ok
     ]);
-use([Line,Circle])
+//use([Line,Circle])
 //use(Object.values(zrender));
